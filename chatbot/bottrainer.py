@@ -102,7 +102,7 @@ class BotTrainer(object):
                     summary_writer.add_summary(summary, global_step)
 
                     # Save checkpoint
-                    if train_perp < 1.6 and train_perp < last_record_perp:
+                    if train_perp < last_record_perp:
                         self.model.saver.save(sess, os.path.join(result_dir, "basic"), global_step=global_step)
                         last_record_perp = train_perp
 
