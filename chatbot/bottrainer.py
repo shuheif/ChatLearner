@@ -48,7 +48,13 @@ class BotTrainer(object):
         config_proto.gpu_options.allow_growth = True
 
         with tf.Session(target=target, config=config_proto, graph=self.graph) as sess:
-            sess.run(tf.global_variables_initializer())
+            # Check the latest checkpoint
+            ckpt_file_path = tf.train.latest_checkpoint(result_dir)
+            if ckpt_file_path is not None:
+                self.model.saver.restore(sess, ckpt_file_path)
+            else:
+                sess.run(tf.global_variables_initializer())
+            
             sess.run(tf.tables_initializer())
             global_step = self.model.global_step.eval(session=sess)
 
